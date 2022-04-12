@@ -1,0 +1,5 @@
+polars
+yfinance
+isort
+black
+toml
