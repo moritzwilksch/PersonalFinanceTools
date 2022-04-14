@@ -11,6 +11,7 @@ from pylatex import (
     Section,
     Subsection,
     Tabu,
+    Figure,
     Tabular,
 )
 from pylatex.utils import NoEscape, italic
@@ -22,7 +23,7 @@ def create_preamble(doc: Document):
             "renewcommand", arguments=[Command("familydefault"), Command("sfdefault")]
         )
     )
-    doc.preamble.append(Command("usepackage", "uarial"))
+    # doc.preamble.append(Command("usepackage", "uarial"))
     doc.preamble.append(
         Command("usepackage", options=["a4paper", "margin=1in"], arguments="geometry")
     )
@@ -69,5 +70,9 @@ if __name__ == "__main__":
 
     # Sections
     doc = fill_document(doc)
+
+    with doc.create(Figure(position="h!")) as fig:
+        fig.add_image(filename="plot.png", width="500px")
+
 
     doc.generate_pdf(clean=True, clean_tex=False)
