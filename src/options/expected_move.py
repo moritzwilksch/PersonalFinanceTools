@@ -1,11 +1,11 @@
 # %%
-import numpy as np
-import matplotlib.ticker as mtick
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+import matplotlib_inline
+import numpy as np
 import seaborn as sns
 import yfinance as yf
-import matplotlib_inline
 
 matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
 plt.rcParams["font.family"] = "Arial"
@@ -92,7 +92,9 @@ ax.set(
     ylim=(
         yft_plot.Close.min() * 0.98,
         1.02
-        * max(yft_plot.Close.max(), ((upper_bound + 1) * yft_plot.Close.iloc[-1]).max()),
+        * max(
+            yft_plot.Close.max(), ((upper_bound + 1) * yft_plot.Close.iloc[-1]).max()
+        ),
     ),
 )
 
