@@ -13,6 +13,7 @@ from pylatex import (
     Tabu,
     Figure,
     Tabular,
+    TextColor
 )
 from pylatex.utils import NoEscape, italic
 
@@ -26,6 +27,9 @@ def create_preamble(doc: Document):
     # doc.preamble.append(Command("usepackage", "uarial"))
     doc.preamble.append(
         Command("usepackage", options=["a4paper", "margin=1in"], arguments="geometry")
+    )
+    doc.preamble.append(
+        Command("usepackage", "xcolor")
     )
 
     return doc
@@ -54,7 +58,7 @@ def fill_document(doc: Document):
 def create_title(doc: Document):
     with doc.create(Center()):
         doc.append(NoEscape("{ \LARGE"))
-        doc.append(Command("textbf", "Trade Report"))
+        doc.append(TextColor("blue", Command("textbf", "Trade Report")))
         doc.append(NoEscape("}"))
 
     return doc
@@ -73,6 +77,7 @@ if __name__ == "__main__":
 
     with doc.create(Figure(position="h!")) as fig:
         fig.add_image(filename="plot.png", width="500px")
+        fig.add_caption("Caption of expected move")
 
 
     doc.generate_pdf(clean=True, clean_tex=False)
