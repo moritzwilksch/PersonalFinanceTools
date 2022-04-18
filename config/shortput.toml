@@ -1,0 +1,6 @@
+TICKER = "SBUX"
+DTE = 39
+
+# Fixed params
+P_ITM = 0.3
+PERIOD = "2y"

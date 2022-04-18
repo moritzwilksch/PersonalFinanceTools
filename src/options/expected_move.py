@@ -1,26 +1,21 @@
-# %%
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-import matplotlib_inline
 import numpy as np
 import seaborn as sns
+import toml
 import yfinance as yf
 
-matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
-plt.rcParams["font.family"] = "Arial"
+# plt.rcParams["font.family"] = "Arial"
 plt.rcParams["font.size"] = 10
 
+config = toml.load("config/shortput.toml")
+TICKER = config.get("TICKER")
+DTE = config.get("DTE")
+P_ITM = config.get("P_ITM")  # 0.3
+PERIOD = config.get("PERIOD")  # "5y"
 
-TICKER = "INTC"
-DTE = 22
-P_ITM = 0.3
-PERIOD = "5y"
-
-# %%
 yft = yf.Ticker(TICKER).history(PERIOD)
-
-# %%
 returns = yft["Close"].pct_change().dropna().values
 
 samples = np.random.choice(returns, (100_000, DTE)) + 1
@@ -29,10 +24,8 @@ final_return = samples.cumprod(axis=1) - 1
 lower_bound = np.quantile(final_return, P_ITM, axis=0)
 upper_bound = np.quantile(final_return, 1 - P_ITM, axis=0)
 
-# %%
 
 N_DAYSTOPLOT = 365
-
 if N_DAYSTOPLOT > len(yft):
     raise IndexError("Cannot plot more days than `PERIOD`")
 yft_plot = yft[-N_DAYSTOPLOT:]
@@ -83,10 +76,13 @@ lower_final_price = (lower_bound[-1] + 1) * yft_plot.Close.iloc[-1]
 upper_final_price = (upper_bound[-1] + 1) * yft_plot.Close.iloc[-1]
 
 
-ax.set_title(
-    f"\${TICKER} (${yft_plot.Close.iloc[-1]:.2f}) Expected Delta = {P_ITM} Move of {DTE} DTE based on prev {PERIOD}",
-    size=16,
-)
+# ax.set_title(
+#     f"\${TICKER} (${yft_plot.Close.iloc[-1]:.2f}) Expected Delta = {P_ITM} Move of {DTE} DTE based on prev {PERIOD}",
+#     size=16,
+# )
+
+ax.set_title(f"[\${lower_final_price:.2f}, \${upper_final_price:.2f}]")
+
 ax.set(
     xlim=(yft_plot.index.min(), x_extrapolation[-1] + np.timedelta64(2, "D")),
     ylim=(
@@ -117,4 +113,10 @@ ax.annotate(
     backgroundcolor="white",
 )
 
-plt.savefig("out/plot.png", transparent=False, facecolor="white", dpi=300)
+plt.savefig(
+    "out/expected_move.png",
+    transparent=False,
+    facecolor="white",
+    dpi=300,
+    bbox_inches="tight",
+)

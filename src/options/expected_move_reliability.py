@@ -1,34 +1,31 @@
-# %%
 from typing import Literal
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
-from typing import Literal
-from joblib import delayed, Parallel
+import toml
 import yfinance as yf
+from joblib import Parallel, delayed
 
-plt.rcParams["font.family"] = "Arial"
+# plt.rcParams["font.family"] = "Arial"
 
+config = toml.load("config/shortput.toml")
+TICKER = config.get("TICKER")
+DTE = config.get("DTE")
+P_ITM = config.get("P_ITM")  # 0.3
+PERIOD = config.get("PERIOD")  # "5y"
 
-TICKER = "OHI"
-DTE = 30
-P_ITM = 0.3
-PERIOD = "5y"
-
-# %%
 yft = yf.Ticker(TICKER).history(PERIOD)
-
-# %%
 returns = yft["Close"].pct_change().fillna(0).values
 
 
-# %%
 THRESH = "lower"  # lower, upper, both
-
 start = len(returns) // 5
 
 
-def simulate(cutoff, n_samples=2_500, thresh: Literal["lower", "upper", "both"] = "both"):
+def simulate(
+    cutoff, n_samples=2_500, thresh: Literal["lower", "upper", "both"] = "both"
+):
     samples = np.random.choice(returns[:cutoff], (n_samples, DTE)) + 1
     final_return = samples.cumprod(axis=1) - 1
 
@@ -51,7 +48,7 @@ result = Parallel(n_jobs=-1)(
     for cutoff in range(start, len(returns) - DTE)
 )
 
-fig, ax = plt.subplots(figsize=(15, 6))
+fig, ax = plt.subplots(figsize=(9, 4))
 ax.plot(
     list(range(start, len(returns) - DTE)),
     (np.array(result).cumsum() / range(1, len(result) + 1)),
@@ -82,4 +79,4 @@ ax.text(
 )
 sns.despine()
 
-# %%
+plt.savefig("out/expected_move_reliability.png", dpi=300, bbox_inches="tight")
