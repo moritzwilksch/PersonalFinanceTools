@@ -1,5 +1,5 @@
-TICKER = "SBUX"
-DTE = 39
+TICKER = "MPW"
+DTE = 27
 
 # Fixed params
 P_ITM = 0.3

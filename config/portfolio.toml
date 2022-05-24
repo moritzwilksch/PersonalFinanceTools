@@ -22,16 +22,11 @@ portfolio = [
     "ISPA.DE",
     "IQQ6.DE",
     "QYLD",
-    "MPW",
+    "SPHD",
 ]
 
 candidates = [
-    "BLK",
-    "LTC",
-    "ISPA.DE",
-    "IQQ6.DE",
-    "QYLD",
     "MPW",
-    "ARCC",
-    "RYLD",
+    "SCHD",
+    "SPYD"
 ]
