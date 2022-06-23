@@ -7,7 +7,7 @@ from pylatex.utils import NoEscape, italic
 
 
 def create_preamble(doc: Document):
-    """ Creates document preamble """
+    """Creates document preamble"""
     doc.preamble.append(
         Command(
             "renewcommand", arguments=[Command("familydefault"), Command("sfdefault")]
@@ -23,7 +23,7 @@ def create_preamble(doc: Document):
 
 
 def fill_document(doc: Document, ticker: str, dte: int):
-    """ Fills document with content """
+    """Fills document with content"""
     yf_ticker = yf.Ticker(ticker)
     price = yf_ticker.history("1d")["Close"].to_list()[-1]
     expiration = datetime.datetime.today() + datetime.timedelta(days=dte)

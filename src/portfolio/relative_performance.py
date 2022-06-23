@@ -1,18 +1,19 @@
 #%%
-import yfinance as yf
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
+import yfinance as yf
 from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('pdf', 'svg')
+
+set_matplotlib_formats("pdf", "svg")
 
 #%%
 tickers = [
-    "JEPI",
-    "SCHD",
-    "SPYD",
+    # "JEPI",
+    # "SCHD",
+    # "SPYD",
     "DIVO",
-    "SPHD",
+    # "SPHD",
     "DGRO"
     # "VYM",
     # "VIG"
@@ -31,7 +32,9 @@ close_divs_reinvested = close_divs_reinvested / close_divs_reinvested.iloc[0]
 
 #%%
 plot_close = close.reset_index().melt(var_name="ticker", id_vars="Date")
-plot_close_divs_reinvested = close_divs_reinvested.reset_index().melt(var_name="ticker", id_vars="Date")
+plot_close_divs_reinvested = close_divs_reinvested.reset_index().melt(
+    var_name="ticker", id_vars="Date"
+)
 
 #%%
 fig, ax = plt.subplots(figsize=(15, 8))
