@@ -3,13 +3,13 @@ import numpy as np
 import pandas as pd
 import toml
 import yfinance as yf
+from rich import print
 from rich.progress import track
 
 from src.utils.log import log
 
 #%%
 data = toml.load("config/holdings.toml")
-
 
 df = pd.DataFrame(data["stocks"]["ibkr"])
 yf_tickers = yf.Tickers(df["ticker"].to_list())
@@ -27,12 +27,31 @@ class DataLoader:
         holdings_path: str = "config/holdings.toml",
     ) -> None:
         data = toml.load(holdings_path)
-        df = pd.DataFrame(data["stocks"][portfolio_name])
-        self.yf_tickers = yf.Tickers(df["ticker"].to_list())
+        self.HARDCODED_DIVIDENDS = data["hardcoded_dividends"]
+
+        self.portfolio = data["stocks"][portfolio_name]
+        self.position = {
+            elem.get("ticker"): elem.get("position") for elem in self.portfolio
+        }
+        ticker_list = [el.get("ticker") for el in self.portfolio]
+        self.yf_tickers = yf.Tickers(ticker_list)
 
     def _get_avg_historical_dividend(self, yf_ticker: yf.Ticker):
+        """
+        Pulls average yearly dividend for yf_ticker.
+
+        Args:
+            yf_ticker (yf.Ticker): yfinance ticker object
+
+        Returns:
+            float: Average yearly dividend of current and previous year.
+        """
         dividends = yf_ticker.dividends
         if len(dividends) == 0:
+            for elem in self.HARDCODED_DIVIDENDS:
+                if elem["ticker"] == yf_ticker.ticker:
+                    return elem["dividend"]
+
             log.warning(f"No data found for {yf_ticker.ticker}")
             return 0.0
         dividends = dividends.to_frame().reset_index()
@@ -63,7 +82,13 @@ class DataLoader:
         dividends = []
         for ticker in track(self.yf_tickers.tickers.values()):
             dividend = self._get_avg_historical_dividend(ticker)
-            dividends.append({ticker.ticker: dividend})
+            dividends.append(
+                {
+                    "ticker": ticker.ticker,
+                    "dividend": dividend,
+                    "position": self.position.get(ticker.ticker),
+                }
+            )
 
         print(dividends)
 
