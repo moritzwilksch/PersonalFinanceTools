@@ -10,10 +10,10 @@ set_matplotlib_formats("pdf", "svg")
 #%%
 tickers = [
     # "JEPI",
-    # "SCHD",
-    # "SPYD",
+    "SCHD",
+    "SPYD",
     "DIVO",
-    # "SPHD",
+    "SPHD",
     "DGRO"
     # "VYM",
     # "VIG"
