@@ -9,14 +9,14 @@ set_matplotlib_formats("pdf", "svg")
 
 #%%
 tickers = [
-    # "JEPI",
+    "JEPI",
     "SCHD",
     "SPYD",
     "DIVO",
     "SPHD",
-    "DGRO"
-    # "VYM",
-    # "VIG"
+    "DGRO",
+    "VYM",
+    "VIG"
 ]
 data = yf.Tickers(tickers).history("5y")[["Dividends", "Close"]]
 close, divis = data["Close"], data["Dividends"]
