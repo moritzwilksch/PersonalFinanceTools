@@ -1,5 +1,5 @@
-TICKER = "MPW"
-DTE = 27
+TICKER = "NVDA"
+DTE = 30
 
 # Fixed params
 P_ITM = 0.3
