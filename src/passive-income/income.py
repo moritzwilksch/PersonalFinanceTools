@@ -183,9 +183,9 @@ class Report:
             ]
         )
 
-        cash_flows["crypto"] = sum(
-            [pos["investment"] * pos["apr"] for pos in DataLoader().get_crypto_data()]
-        )
+        # cash_flows["crypto"] = sum(
+        #     [pos["investment"] * pos["apr"] for pos in DataLoader().get_crypto_data()]
+        # )
 
         with doc.create(Table(position="!ht")) as t:
             t.append(Command("centering"))
@@ -308,7 +308,7 @@ class Report:
         self.add_summary_section(doc)
         self.add_stocks_section(doc)
         self.add_p2p_section(doc)
-        self.add_crypto_section(doc)
+        # self.add_crypto_section(doc)
         doc.generate_pdf("out/report/report", clean_tex=False)
 
 
