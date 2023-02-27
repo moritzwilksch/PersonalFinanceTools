@@ -1,8 +1,5 @@
 #%%
-from curses import noecho
-from turtle import position
 import joblib
-import numpy as np
 import pandas as pd
 import toml
 import yfinance as yf

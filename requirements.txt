@@ -3,3 +3,4 @@ yfinance
 isort
 black
 toml
+joblib
