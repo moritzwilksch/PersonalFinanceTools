@@ -1,4 +1,4 @@
-#%%
+# %%
 import joblib
 import pandas as pd
 import toml
@@ -10,16 +10,16 @@ from rich.progress import track
 
 from utils.log import log
 
-#%%
+# %%
 data = toml.load("config/holdings.toml")
 
 df = pd.DataFrame(data["stocks"]["ibkr"])
 yf_tickers = yf.Tickers(df["ticker"].to_list())
 
-#%%
+# %%
 # yf_tickers.download(period="2y", interval="3mo")
 
-#%%
+# %%
 USE_CACHE = True
 
 
@@ -112,19 +112,19 @@ class Report:
         self.PORTFOLIOS = ["ibkr", "degiro", "comdirect"]
 
     def create_preamble(self, doc: Document):
-
         doc.preamble.append(Command("usepackage", "charter"))
         doc.preamble.append(Command("usepackage", "parskip"))
         doc.preamble.append(Command("usepackage", "booktabs"))
         # doc.preamble.append(Command("usepackage", "float"))
-        doc.preamble.append(Command("usepackage", "geometry", ["a4paper", "margin=1in"]))
+        doc.preamble.append(
+            Command("usepackage", "geometry", ["a4paper", "margin=1in"])
+        )
 
         doc.append(Command("title", NoEscape("\\vspace{-3em} Passive Income Report")))
         doc.append(Command("date", NoEscape("\\vspace{-3em}\\today")))
         doc.append(Command("maketitle"))
 
     def create_table_from_dividends(self, doc: Document, dividends: list):
-
         with doc.create(Table(position="!ht")) as t:
             t.append(Command("centering"))
 
@@ -221,7 +221,12 @@ class Report:
                 tab.append(Command("bottomrule"))
 
                 disclaimer = f"EUR/USD rate = {self.eurusd:.3f}, summing cashflow from {', '.join(cash_flows.keys())}"
-                tab.append(Command("multicolumn", [4, "c",  NoEscape(f"\\footnotesize {disclaimer}")]))
+                tab.append(
+                    Command(
+                        "multicolumn",
+                        [4, "c", NoEscape(f"\\footnotesize {disclaimer}")],
+                    )
+                )
 
     def add_stocks_section(self, doc: Document):
         # doc.append(Command("newpage"))
