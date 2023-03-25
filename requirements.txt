@@ -4,3 +4,4 @@ isort
 black
 toml
 joblib
+pylatex

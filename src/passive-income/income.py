@@ -8,7 +8,7 @@ from regex import P
 from rich import print
 from rich.progress import track
 
-from src.utils.log import log
+from utils.log import log
 
 #%%
 data = toml.load("config/holdings.toml")
@@ -20,7 +20,7 @@ yf_tickers = yf.Tickers(df["ticker"].to_list())
 # yf_tickers.download(period="2y", interval="3mo")
 
 #%%
-USE_CACHE = False
+USE_CACHE = True
 
 
 class DataLoader:
