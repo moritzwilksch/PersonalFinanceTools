@@ -20,7 +20,7 @@ yf_tickers = yf.Tickers(df["ticker"].to_list())
 # yf_tickers.download(period="2y", interval="3mo")
 
 # %%
-USE_CACHE = True
+USE_CACHE = False
 
 
 class DataLoader:
