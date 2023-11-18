@@ -69,7 +69,7 @@ class DataLoader:
 
         try:
             # use average of last 2 full years
-            return dividend_per_year.iloc[-3:-1].mean()
+            return dividend_per_year.iloc[-2]
         except:
             log.warning(
                 f"Could not index previous years dividend for ticker {yf_ticker.ticker}."
