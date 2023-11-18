@@ -4,8 +4,6 @@ import pandas as pd
 import toml
 import yfinance as yf
 from pylatex import Command, Document, NoEscape, Section, Subsection, Table, Tabular
-from regex import P
-from rich import print
 from rich.progress import track
 
 from utils.log import log
@@ -61,7 +59,7 @@ class DataLoader:
             return 0.0
         dividends = dividends.to_frame().reset_index()
 
-        dividend_per_year = dividends.groupby(dividends["Date"].dt.year).sum()
+        dividend_per_year = dividends.groupby(dividends["Date"].dt.year)["Dividends"].sum()
 
         if dividend_per_year.empty:
             log.warning(
@@ -70,8 +68,8 @@ class DataLoader:
             return 0.0
 
         try:
-            # use current year and previous year avg
-            return dividend_per_year.iloc[-2].tolist()[0]
+            # use average of last 2 full years
+            return dividend_per_year.iloc[-3:-1].mean()
         except:
             log.warning(
                 f"Could not index previous years dividend for ticker {yf_ticker.ticker}."

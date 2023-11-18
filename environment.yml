@@ -1,0 +1,16 @@
+name: finance
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - polars
+  - yfinance
+  - isort
+  - black
+  - toml
+  - joblib
+  - pylatex
+  - rich
+  - pip
+  - pip:
+    - -e .
