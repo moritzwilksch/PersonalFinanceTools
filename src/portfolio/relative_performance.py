@@ -17,6 +17,7 @@ tickers = [
     "DIVO",
     # "SPHD",
     "DGRO",
+    "DGRW",
     # "VYM",
     "VIG"
     # "COWZ",

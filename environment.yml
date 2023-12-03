@@ -10,6 +10,10 @@ dependencies:
   - toml
   - joblib
   - pylatex
+  - ipykernel
+  - matplotlib
+  - seaborn
+  - pyarrow
   - rich
   - pip
   - pip:
