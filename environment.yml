@@ -14,6 +14,7 @@ dependencies:
   - matplotlib
   - seaborn
   - pyarrow
+  - python-duckdb
   - rich
   - pip
   - pip:
